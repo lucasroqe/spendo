@@ -1,17 +1,23 @@
+import { AppSidebar } from "@/components/dashboard/AppSidebar";
 
-import { AppSidebar } from "@/components/dashboard/AppSidebar"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { cookies } from "next/headers";
 
 export default async function Layout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar:state")?.value === "true";
 
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={defaultOpen}>
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -24,6 +30,5 @@ export default async function Layout({
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
-
