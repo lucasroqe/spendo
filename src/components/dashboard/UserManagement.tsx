@@ -5,27 +5,17 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-export default function Example() {
+export default function UserManagement() {
   return (
     <>
       <h1 className="text-lg font-bold text-gray-900 dark:text-gray-50">
         Settings
       </h1>
       <p className="mt-2 text-sm/6 text-gray-500 dark:text-gray-500">
-        Manage your personal details, workspace governance and notifications.
+        Manage your personal details.
       </p>
+      <br />
       <Tabs defaultValue="tab1" className="mt-8">
-        <TabsList>
-          <TabsTrigger value="tab1" className="inline-flex gap-2">
-            Account details
-          </TabsTrigger>
-          <TabsTrigger value="tab2" className="inline-flex gap-2">
-            Workspaces
-          </TabsTrigger>
-          <TabsTrigger value="tab3" className="inline-flex gap-2">
-            Billing
-          </TabsTrigger>
-        </TabsList>
         <div className="mt-8 space-y-8">
           <form action="#" method="POST">
             <h2 className="font-semibold text-gray-900 dark:text-gray-50">
