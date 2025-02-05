@@ -10,6 +10,9 @@ import EntertainmentCard from "@/components/dashboard/cards/EntertainmentCard";
 import { BarCard } from "@/components/dashboard/cards/BarCard";
 import { PizzaCard } from "@/components/dashboard/cards/PizzaCard";
 import { LastCard } from "@/components/dashboard/cards/LastCard";
+import { getUserLastTransactions } from "@/lib/actions";
+
+const lastTransactions = await getUserLastTransactions()
 
 export default function Page() {
   return (
@@ -29,7 +32,7 @@ export default function Page() {
           <PizzaCard />
         </div>
         <div className="aspect-video rounded-xl">
-          <LastCard />
+          <LastCard data={lastTransactions}/>
         </div>
       </div>
     </div>

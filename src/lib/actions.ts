@@ -32,6 +32,27 @@ export async function getUsersTransactions() {
   }));
 }
 
+export async function getUserLastTransactions() {
+
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  const transactions = await prisma.transactions.findMany({
+    where: {
+      userId: session?.session.userId
+    },
+    orderBy:{
+      createdAt: 'desc'
+    }
+  });
+
+  return transactions.map((transaction) => ({
+    ...transaction,
+    date: transaction.date.toISOString().split("T")[0],
+  }));
+}
+
 export async function createTransactions(transactionData: TransactionData) {
   
   const session = await auth.api.getSession({
@@ -71,10 +92,6 @@ export async function createTransactions(transactionData: TransactionData) {
 
 export async function deleteTransactions(data: any) {
   
-  const session = await auth.api.getSession({
-    headers: await headers()
-  });
-
   const transaction = await prisma.transactions.delete({
     where:{
       id: data

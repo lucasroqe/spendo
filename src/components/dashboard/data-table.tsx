@@ -180,7 +180,6 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
     <div className="w-full">
       <div className="flex py-4 justify-end space-x-10">
         <DialogDemo />
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline">
