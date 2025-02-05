@@ -66,11 +66,9 @@ export const columns: ColumnDef<Transaction>[] = [
     id: "date",
     accessorKey: "date",
     header: "Date",
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("date"));
-
-      return <div>{date.toLocaleDateString("pt-br")}</div>;
-    },
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("date")}</div>
+    ),
   },
   {
     id: "amount",

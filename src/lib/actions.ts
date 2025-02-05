@@ -16,19 +16,22 @@ const session = await auth.api.getSession({
 });
 
 export async function getUsersTransactions() {
+  
   const transactions = await prisma.transactions.findMany({
     where: {
       userId: session?.session.userId,
     },
     orderBy: {
-      date: "desc",
+      date: "asc",
     },
   });
 
+
   return transactions.map((transaction) => ({
     ...transaction,
-    date: transaction.date.toISOString().split("T")[0],
+    date: new Date(transaction.date).toLocaleDateString('pt-BR')
   }));
+
 }
 
 export async function getUserLastTransactions() {
