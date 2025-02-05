@@ -19,18 +19,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-  { category: "transport", visitors: 275, fill: "var(--color-transport)" },
-  { category: "shopping", visitors: 200, fill: "var(--color-shopping)" },
-  { category: "others", visitors: 187, fill: "var(--color-others)" },
-  { category: "food", visitors: 173, fill: "var(--color-food)" },
-  { category: "entertainment", visitors: 90, fill: "var(--color-entertainment)" },
-]
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
   transport: {
     label: "Transport",
     color: "#3b82f6",
@@ -53,12 +43,19 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function PizzaCard() {
+export function PizzaCard({ data }: any) {
+  
+  const chartData = data.map((item: any) => ({
+    category: item.category.toLowerCase(),
+    value: item._sum.amount,
+    fill: chartConfig[item.category as keyof typeof chartConfig]?.color || "#000",
+  }));
+
   return (
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
         <CardTitle>Pie Chart - Custom Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription className="py-4">January - June 2024</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0 mt-5">
         <ChartContainer
@@ -67,11 +64,11 @@ export function PizzaCard() {
         >
           <PieChart className="">
             <ChartTooltip
-              content={<ChartTooltipContent nameKey="visitors" hideLabel />}
+              content={<ChartTooltipContent nameKey="category" hideLabel />}
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
+              dataKey="value"
               labelLine={false}
               label={({ payload, ...props }) => {
                 return (
@@ -84,9 +81,9 @@ export function PizzaCard() {
                     dominantBaseline={props.dominantBaseline}
                     fill="hsla(var(--foreground))"
                   >
-                    {payload.visitors}
+                    {payload.value}
                   </text>
-                )
+                );
               }}
               nameKey="category"
             />
@@ -94,14 +91,11 @@ export function PizzaCard() {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+      <CardFooter className="flex-col gap-2 text-sm h-screen">
+        <div className="leading-none text-muted-foreground h-10">
+          Showing total amount per category
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

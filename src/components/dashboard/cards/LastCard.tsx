@@ -174,7 +174,7 @@ export function LastCard({ data }: { data: Transaction[] }) {
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
         <CardTitle>Transaction Table</CardTitle>
-        <CardDescription>Latest transactions overview</CardDescription>
+        <CardDescription className="py-4">Latest transactions overview</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="rounded-md border">
@@ -229,10 +229,7 @@ export function LastCard({ data }: { data: Transaction[] }) {
         </div>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Updated recently
-        </div>
-        <div className="leading-none text-muted-foreground">
+        <div className="leading-none text-muted-foreground h-10">
           Showing transaction history
         </div>
       </CardFooter>
