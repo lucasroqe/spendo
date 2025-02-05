@@ -11,11 +11,11 @@ interface TransactionData {
   description?: string;
 }
 
-export async function getUsersTransactions() {
+const session = await auth.api.getSession({
+  headers: await headers()
+});
 
-  const session = await auth.api.getSession({
-    headers: await headers()
-  });
+export async function getUsersTransactions() {
 
   const transactions = await prisma.transactions.findMany({
     where: {
@@ -34,10 +34,6 @@ export async function getUsersTransactions() {
 
 export async function getUserLastTransactions() {
 
-  const session = await auth.api.getSession({
-    headers: await headers()
-  });
-
   const transactions = await prisma.transactions.findMany({
     where: {
       userId: session?.session.userId
@@ -54,17 +50,10 @@ export async function getUserLastTransactions() {
 }
 
 export async function createTransactions(transactionData: TransactionData) {
-  
-  const session = await auth.api.getSession({
-    headers: await headers()
-  });
-
 
   if (!session) {
     throw new Error("No session found");
   }
-
-  console.log('Sessão', session);
 
   const user = await prisma.user.findUnique({
     where: { id: session.session.userId },
@@ -94,9 +83,25 @@ export async function deleteTransactions(data: any) {
   
   const transaction = await prisma.transactions.delete({
     where:{
-      id: data
+      id: data,
+      userId: session?.session.userId
     }
   })
 
   return transaction
+}
+
+export async function getTotalAmountsByCategory() {
+
+  const transactions = await prisma.transactions.groupBy({
+    by: ["category"], 
+    _sum: {
+      amount: true,
+    },
+    where: {
+      userId: session?.session.userId,
+    },
+  });
+
+  return transactions; 
 }
