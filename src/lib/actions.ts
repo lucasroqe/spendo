@@ -2,7 +2,7 @@
 import { Category } from "@prisma/client";
 import { prisma } from "./prisma";
 import { headers } from "next/headers";
-import { auth } from './auth'
+import { auth } from "./auth";
 
 interface TransactionData {
   category: Category;
@@ -12,18 +12,17 @@ interface TransactionData {
 }
 
 const session = await auth.api.getSession({
-  headers: await headers()
+  headers: await headers(),
 });
 
 export async function getUsersTransactions() {
-
   const transactions = await prisma.transactions.findMany({
     where: {
-      userId: session?.session.userId
+      userId: session?.session.userId,
     },
-    orderBy:{
-      date: 'desc'
-    }
+    orderBy: {
+      date: "desc",
+    },
   });
 
   return transactions.map((transaction) => ({
@@ -33,14 +32,14 @@ export async function getUsersTransactions() {
 }
 
 export async function getUserLastTransactions() {
-
+  
   const transactions = await prisma.transactions.findMany({
     where: {
-      userId: session?.session.userId
+      userId: session?.session.userId,
     },
-    orderBy:{
-      createdAt: 'desc'
-    }
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return transactions.map((transaction) => ({
@@ -50,7 +49,6 @@ export async function getUserLastTransactions() {
 }
 
 export async function createTransactions(transactionData: TransactionData) {
-
   if (!session) {
     throw new Error("No session found");
   }
@@ -58,7 +56,7 @@ export async function createTransactions(transactionData: TransactionData) {
   const user = await prisma.user.findUnique({
     where: { id: session.session.userId },
   });
-  
+
   if (!user) {
     throw new Error("User not found");
   }
@@ -70,31 +68,28 @@ export async function createTransactions(transactionData: TransactionData) {
       amount: transactionData.amount,
       description: transactionData.description,
       date: transactionData.date,
-    }
+    },
   });
 
-  console.log('Transicao', transaction);
-  
+  console.log("Transicao", transaction);
 
   return transaction;
 }
 
 export async function deleteTransactions(data: any) {
-  
   const transaction = await prisma.transactions.delete({
-    where:{
+    where: {
       id: data,
-      userId: session?.session.userId
-    }
-  })
+      userId: session?.session.userId,
+    },
+  });
 
-  return transaction
+  return transaction;
 }
 
 export async function getTotalAmountsByCategory() {
-
   const transactions = await prisma.transactions.groupBy({
-    by: ["category"], 
+    by: ["category"],
     _sum: {
       amount: true,
     },
@@ -103,5 +98,5 @@ export async function getTotalAmountsByCategory() {
     },
   });
 
-  return transactions; 
+  return transactions;
 }

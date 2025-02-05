@@ -173,6 +173,10 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
       columnFilters,
       columnVisibility,
       rowSelection,
+      pagination:{
+        pageIndex: 0,
+        pageSize: 10,
+      }
     },
   });
 

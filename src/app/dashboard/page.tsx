@@ -1,20 +1,17 @@
 import TransportCard from "@/components/dashboard/cards/TransportCard";
-
 import ShoppingCard from "@/components/dashboard/cards/ShoppingCard";
-
 import OthersCard from "@/components/dashboard/cards/OthersCard";
-
 import FoodCard from "@/components/dashboard/cards/FoodCard";
-
 import EntertainmentCard from "@/components/dashboard/cards/EntertainmentCard";
 import { BarCard } from "@/components/dashboard/cards/BarCard";
 import { PizzaCard } from "@/components/dashboard/cards/PizzaCard";
 import { LastCard } from "@/components/dashboard/cards/LastCard";
 import { getUserLastTransactions } from "@/lib/actions";
 
-const lastTransactions = await getUserLastTransactions()
+export default async function Page() {
 
-export default function Page() {
+  const lastTransactions = await getUserLastTransactions();
+
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
       <div className="grid gap-4 md:grid-cols-5">
@@ -32,7 +29,7 @@ export default function Page() {
           <PizzaCard />
         </div>
         <div className="aspect-video rounded-xl">
-          <LastCard data={lastTransactions}/>
+          <LastCard data={lastTransactions} />
         </div>
       </div>
     </div>
