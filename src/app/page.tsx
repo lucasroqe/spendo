@@ -1,12 +1,13 @@
-"use client";
-import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import Header from "@/components/main-page/Header";
+import Hero from "@/components/main-page/Hero";
+import Footer from "@/components/main-page/Footer";
 
 export default function Home() {
-
   return (
-    <main>
-      <div>Hello world!</div>
-    </main>
+    <div className="flex flex-col min-h-screen ">
+      <Header />
+      <Hero />
+      <Footer />
+    </div>
   );
 }
