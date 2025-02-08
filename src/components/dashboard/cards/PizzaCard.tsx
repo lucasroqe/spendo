@@ -29,7 +29,7 @@ const chartConfig = {
     label: "Shopping",
     color: "#f97316",
   },
-  others: {
+  other: {
     label: "Others",
     color: "#64748b",
   },
@@ -40,7 +40,7 @@ const chartConfig = {
   entertainment: {
     label: "Entertainment",
     color: "#22c55e",
-  },
+  },  
 } satisfies ChartConfig
 
 export function PizzaCard({ data }: any) {
@@ -54,8 +54,8 @@ export function PizzaCard({ data }: any) {
   return (
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Custom Label</CardTitle>
-        <CardDescription className="py-4">January - June 2024</CardDescription>
+        <CardTitle>Composition of total expenditure</CardTitle>
+        <CardDescription className="py-4">January - December 2025</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0 mt-5">
         <ChartContainer

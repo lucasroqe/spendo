@@ -53,7 +53,7 @@ export function SignIn({
             router.push("/dashboard");
           }, 1500);
         },
-        onError: (ctx) => {
+        onError: (ctx:any) => {
           setLoading(false);
           toast({
             title: "Something went wrong!",
@@ -70,17 +70,17 @@ export function SignIn({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Please enter your email and password below to log in to your
+          <CardTitle className="text-2xl text-emerald-500">Login</CardTitle>
+            <CardDescription>
+            Enter your email and password below to log in to your
             account.
-          </CardDescription>
+            </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-emerald-900">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -91,7 +91,7 @@ export function SignIn({
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password" className="text-emerald-900">Password</Label>
                 </div>
                 <Input
                   id="password"
@@ -100,7 +100,7 @@ export function SignIn({
                   {...register("password")}
                 />
               </div>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full bg-emerald-500 text-white hover:bg-emerald-600">
                 {loading ? (
                   <LoaderCircle size={16} className="animate-spin" />
                 ) : (
@@ -110,7 +110,7 @@ export function SignIn({
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <Link href="/sign-up" className="underline underline-offset-4">
+              <Link href="/sign-up" className="underline underline-offset-4 text-emerald-900">
                 Sign up
               </Link>
             </div>

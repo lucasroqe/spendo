@@ -69,8 +69,8 @@ export function BarCard({ data }: any) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>Bar Chart - Multiple</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Spending distribution</CardTitle>
+        <CardDescription>January - December 2025</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-96 w-full">

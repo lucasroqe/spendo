@@ -17,7 +17,7 @@ export default async function FoodCard() {
     <div className="relative flex items-center justify-between p-5 rounded-xl bg-red-600 text-white drop-shadow-lg">
       <div>
         <p className="text-2xl font-bold">{formatted}</p>
-        <p className="text-sm opacity-80">Total Sales</p>
+        <p className="text-sm opacity-80">Total spent</p>
       </div>
 
       <div className="bg-white bg-opacity-20 p-3 rounded-full">

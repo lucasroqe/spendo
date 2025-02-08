@@ -16,7 +16,7 @@ const FormSchema = z.object({
   amount: z.number({
     required_error: "Amount is required.",
     invalid_type_error: "Amount must be a number",
-  }),
+  }).min(1, { message: "Amount must be at least R$1" }),
   description: z.string().optional(),
 });
 

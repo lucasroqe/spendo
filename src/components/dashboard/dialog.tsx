@@ -128,6 +128,7 @@ export function DialogDemo() {
                   <FormLabel>Amount (R$)</FormLabel>
                   <FormControl>
                     <Input
+                    min={'1'}
                       placeholder="0.00"
                       {...field}
                       type="number"

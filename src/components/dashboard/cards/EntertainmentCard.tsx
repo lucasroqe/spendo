@@ -17,7 +17,7 @@ export default async function EntertainmentCard() {
     <div className="relative flex items-center justify-between p-5 rounded-xl bg-green-500 text-white drop-shadow-lg">
       <div>
         <p className="text-2xl font-bold">{formatted}</p>
-        <p className="text-sm">Total Sales</p>
+        <p className="text-sm">Total spent</p>
       </div>
 
       <div className="bg-white bg-opacity-20 p-3 rounded-full">
