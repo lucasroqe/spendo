@@ -1,8 +1,6 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -17,9 +15,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { getUsersTransactions } from "@/lib/actions";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+
 
 const chartConfig = {
   transport: {
@@ -70,7 +66,7 @@ export function BarCard({ data }: any) {
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Spending distribution</CardTitle>
-        <CardDescription>January - December 2025</CardDescription>
+        <CardDescription>January - December</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-96 w-full">
@@ -107,11 +103,8 @@ export function BarCard({ data }: any) {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing total visitors for this year (2025)
         </div>
       </CardFooter>
     </Card>

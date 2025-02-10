@@ -1,5 +1,5 @@
 "use client";
-
+import clsx from "clsx";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -59,7 +59,7 @@ export const columns: ColumnDef<Transaction>[] = [
     accessorKey: "description",
     header: "Description",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("description")}</div>
+      <div className="capitalize ">{row.getValue("description")}</div>
     ),
   },
   {
@@ -232,9 +232,17 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
+                <TableRow 
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && "selected"
+                  }
+                  className={clsx({
+                    'bg-blue-400': row.original.category === 'transport',
+                    'bg-red-400': row.original.category === 'food',
+                    'bg-orange-400': row.original.category === 'shopping',
+                    'bg-green-400': row.original.category === 'entertainment',
+                    'bg-gray-400': row.original.category === 'other',
+                  })}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

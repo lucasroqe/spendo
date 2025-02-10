@@ -1,5 +1,5 @@
 "use client";
-
+import clsx from "clsx";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -83,7 +83,6 @@ export const columns: ColumnDef<Transaction>[] = [
     accessorKey: "amount",
     header: "Amount",
     cell: ({ row }) => {
-
       const amount = parseFloat(row.getValue("amount"));
 
       const formatted = new Intl.NumberFormat("pt-BR", {
@@ -92,42 +91,6 @@ export const columns: ColumnDef<Transaction>[] = [
       }).format(amount);
 
       return <div className="font-medium">{formatted}</div>;
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
-
-      const router = useRouter();
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="link" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy transition ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                deleteTransactions(payment.id);
-                router.refresh();
-              }}
-            >
-              Delete transition
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
     },
   },
 ];
@@ -163,10 +126,10 @@ export function LastCard({ data }: { data: Transaction[] }) {
       sorting,
       columnVisibility,
       rowSelection,
-      pagination:{
+      pagination: {
         pageIndex: 0,
         pageSize: 5,
-      }
+      },
     },
   });
 
@@ -174,7 +137,9 @@ export function LastCard({ data }: { data: Transaction[] }) {
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
         <CardTitle>Transaction Table</CardTitle>
-        <CardDescription className="py-4">Latest transactions overview</CardDescription>
+        <CardDescription className="py-4">
+          Latest transactions overview
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="rounded-md border">
@@ -203,6 +168,13 @@ export function LastCard({ data }: { data: Transaction[] }) {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className={clsx({
+                      "bg-blue-400": row.original.category === "transport",
+                      "bg-red-400": row.original.category === "food",
+                      "bg-orange-400": row.original.category === "shopping",
+                      "bg-green-400": row.original.category === "entertainment",
+                      'bg-gray-400': row.original.category === 'other',
+                    })}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
