@@ -1,104 +1,141 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { authClient } from "@/lib/auth-client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { KeyRound, Loader2 } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { PasswordSchema } from "@/lib/zod";
 
-export default function UserManagement() {
-  const { register, handleSubmit } = useForm();
+type PasswordFormData = z.infer<typeof PasswordSchema>;
+
+export default function App() {
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  async function onSubmit(dataPassword: any) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<PasswordFormData>({
+    resolver: zodResolver(PasswordSchema),
+  });
 
-    const { password, oldPassword } = dataPassword
-
-    try {
-      await authClient.changePassword(
-        {
-          newPassword: password,
-          currentPassword: oldPassword,
-          revokeOtherSessions: true,
+  async function onSubmit(data: PasswordFormData) {
+    await authClient.changePassword(
+      {
+        newPassword: data.password,
+        currentPassword: data.oldPassword,
+        revokeOtherSessions: true,
+      },
+      {
+        onRequest: () => {
+          setLoading(true);
         },
-        {
-          onResponse: () => {},
-          onRequest: () => {},
-          onSuccess: (ctx) => {
-            toast({
-              title: "Changed password!",
-              description: "Your password has been changed!",
-              variant: "success",
-            });
-            console.log(ctx.response);
-            
-          },
-          onError: (ctx) => {
-            toast({
-              title: "Something went wrong!",
-              description: "Please try again later!",
-              variant: "destructive",
-            });
-            console.log(ctx.error);
-            
-          },
-        }
-      );
-    } catch (error) {
-      console.log("Error in catch");
-      console.log(error);
-    }
+        onSuccess: () => {
+          toast({
+            title: "Password updated successfully",
+            description:
+              "Your password has been changed.",
+            variant: "success",
+          });
+          reset();
+        },
+        onError: () => {
+          toast({
+            title: "Failed to update password",
+            description: "Please check your current password and try again.",
+            variant: "destructive",
+          });
+        },
+      }
+    );
   }
 
   return (
-    <>
-      <h1 className="text-lg font-bold text-gray-900 dark:text-gray-50">
-        Settings
-      </h1>
-      <p className="mt-2 text-sm/6 text-gray-500 dark:text-gray-500">
-        Manage your personal details.
-      </p>
-      <br />
-      <Tabs defaultValue="tab1" className="mt-8">
+    <div className="min-h-screen p-6">
+      <div className=" max-w-3xl">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold tracking-tight">
+            Account settings
+          </h1>
+        </div>
         <div>
-          <br />
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <h2 className="font-semibold text-gray-900 dark:text-gray-50">
-              Password
-            </h2>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-500">
-              Update your password associated with this workspace.
-            </p>
-            <div className="mt-4">
-              <Label htmlFor="oldPassword" className="font-medium">
-                Old password
-              </Label>
+          <div className="flex items-center gap-2 text-lg font-semibold">
+            <KeyRound className="h-5 w-5" />
+            <h2>Change Password</h2>
+          </div>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Password must be at least 5 characters
+          </p>
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="oldPassword">Current password</Label>
               <Input
-                type="password"
                 id="oldPassword"
-                placeholder="Old password"
-                className="mt-2 w-full sm:max-w-lg"
-                {...register("oldPassword")}
-              />
-            </div>
-            <div className="mt-4">
-              <Label htmlFor="password" className="font-medium">
-                New password
-              </Label>
-              <Input
                 type="password"
-                id="password"
-                placeholder="password"
-                className="mt-2 w-full sm:max-w-lg"
-                {...register("password")}
+                {...register("oldPassword")}
+                className={errors.oldPassword ? "border-destructive" : ""}
               />
+              {errors.oldPassword && (
+                <p className="text-sm text-destructive">
+                  {errors.oldPassword.message}
+                </p>
+              )}
             </div>
-            <Button className="mt-6">Update password</Button>
+
+            <div className="space-y-2">
+              <Label htmlFor="password">New password</Label>
+              <Input
+                id="password"
+                type="password"
+                {...register("password")}
+                className={errors.password ? "border-destructive" : ""}
+              />
+              {errors.password && (
+                <p className="text-sm text-destructive">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword">Confirm new Password</Label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                {...register("confirmPassword")}
+                className={errors.confirmPassword ? "border-destructive" : ""}
+              />
+              {errors.confirmPassword && (
+                <p className="text-sm text-destructive">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+
+            <Button
+              type="submit"
+              disabled={loading}
+              className="bg-emerald-500 text-white hover:bg-emerald-600"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Updating password...
+                </>
+              ) : (
+                "Update password"
+              )}
+            </Button>
           </form>
         </div>
-      </Tabs>
-    </>
+      </div>
+    </div>
   );
 }

@@ -20,4 +20,17 @@ const FormSchema = z.object({
   description: z.string().optional(),
 });
 
-export { AuthSchema, FormSchema };
+const PasswordSchema = z
+.object({
+  oldPassword: z.string().min(1, "Current password is required"),
+  password: z
+    .string()
+    .min(5, "Password must be at least 5 characters"),
+  confirmPassword: z.string(),
+})
+.refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
+
+export { AuthSchema, FormSchema, PasswordSchema };

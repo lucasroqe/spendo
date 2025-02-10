@@ -100,7 +100,7 @@ export function SignIn({
                   {...register("password")}
                 />
               </div>
-              <Button type="submit" className="w-full bg-emerald-500 text-white hover:bg-emerald-600">
+              <Button disabled={loading} type="submit" className="w-full bg-emerald-500 text-white hover:bg-emerald-600">
                 {loading ? (
                   <LoaderCircle size={16} className="animate-spin" />
                 ) : (
