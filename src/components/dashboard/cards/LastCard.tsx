@@ -2,7 +2,6 @@
 import clsx from "clsx";
 import {
   ColumnDef,
-  ColumnFiltersState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -12,18 +11,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import * as React from "react";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -40,8 +29,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { deleteTransactions } from "@/lib/actions";
-import { useRouter } from "next/navigation";
 
 export type Transaction = {
   id: string;
@@ -136,7 +123,7 @@ export function LastCard({ data }: { data: Transaction[] }) {
   return (
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Transaction Table</CardTitle>
+        <CardTitle>Transaction table</CardTitle>
         <CardDescription className="py-4">
           Latest transactions overview
         </CardDescription>
@@ -168,13 +155,14 @@ export function LastCard({ data }: { data: Transaction[] }) {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    className={clsx({
-                      "bg-blue-400": row.original.category === "transport",
-                      "bg-red-400": row.original.category === "food",
-                      "bg-orange-400": row.original.category === "shopping",
-                      "bg-green-400": row.original.category === "entertainment",
-                      'bg-gray-400': row.original.category === 'other',
-                    })}
+                  className={clsx('text-base', {
+                    'border-x-4 border-b-0': true, 
+                    'border-blue-400': row.original.category === 'transport',
+                    'border-red-400': row.original.category === 'food',
+                    'border-orange-400': row.original.category === 'shopping',
+                    'border-green-400': row.original.category === 'entertainment',
+                    'border-gray-400': row.original.category === 'other',
+                  })}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
@@ -201,9 +189,9 @@ export function LastCard({ data }: { data: Transaction[] }) {
         </div>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="leading-none text-muted-foreground h-10">
+        {/* <div className="leading-none text-muted-foreground h-10">
           Showing transaction history
-        </div>
+        </div> */}
       </CardFooter>
     </Card>
   );

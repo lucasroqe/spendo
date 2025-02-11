@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grip, ArrowUp } from "lucide-react";
+import { Grip } from "lucide-react";
 import { getTotalAmountsByCategory } from "@/lib/actions";
 
 export default async function OthersCard() {

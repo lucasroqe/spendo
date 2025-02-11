@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Car, ArrowUp } from "lucide-react";
+import { Car } from "lucide-react";
 import { getTotalAmountsByCategory } from "@/lib/actions";
 
 export default async function TransportCard() {

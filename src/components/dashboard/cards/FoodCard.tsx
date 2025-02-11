@@ -1,5 +1,5 @@
 import React from "react";
-import { Pizza, ArrowUp } from "lucide-react";
+import { Pizza } from "lucide-react";
 import { getTotalAmountsByCategory } from "@/lib/actions";
 
 export default async function FoodCard() {

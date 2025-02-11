@@ -36,7 +36,6 @@ import { DialogDemo } from "./dialog";
 import { deleteTransactions } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 
-
 export type Transaction = {
   id: string;
   category: "transport" | "food" | "shopping" | "entertainment" | "other";
@@ -65,10 +64,21 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     id: "date",
     accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("date")}</div>
-    ),
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          className="p-0 w-fit"
+          onClick={() =>
+            (column as any).toggleSorting(column.getIsSorted() === "asc")
+          }
+        >
+          Date
+          <ArrowUpDown />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="capitalize">{row.getValue("date")}</div>,
   },
   {
     id: "amount",
@@ -95,7 +105,7 @@ export const columns: ColumnDef<Transaction>[] = [
         currency: "BRL",
       }).format(amount);
 
-      return <div className="font-medium">{formatted}</div>;
+      return <div className="capitalize">{formatted}</div>;
     },
   },
   {
@@ -103,7 +113,7 @@ export const columns: ColumnDef<Transaction>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row.original;
-      
+
       const router = useRouter();
 
       return (
@@ -180,7 +190,10 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
         <DialogDemo />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">
+            <Button
+              variant="none"
+              className="font-medium bg-emerald-500 text-white hover:bg-emerald-600"
+            >
               Filter category <ChevronDown />
             </Button>
           </DropdownMenuTrigger>
@@ -232,16 +245,16 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow 
+                <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"
-                  }
-                  className={clsx({
-                    'bg-blue-400': row.original.category === 'transport',
-                    'bg-red-400': row.original.category === 'food',
-                    'bg-orange-400': row.original.category === 'shopping',
-                    'bg-green-400': row.original.category === 'entertainment',
-                    'bg-gray-400': row.original.category === 'other',
+                  data-state={row.getIsSelected() && "selected"}
+                  className={clsx('text-base', {
+                    'border-x-4 border-b-0': true, 
+                    'border-blue-400': row.original.category === 'transport',
+                    'border-red-400': row.original.category === 'food',
+                    'border-orange-400': row.original.category === 'shopping',
+                    'border-green-400': row.original.category === 'entertainment',
+                    'border-gray-400': row.original.category === 'other',
                   })}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -269,7 +282,6 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-  
           {table.getFilteredRowModel().rows.length} row (s).
         </div>
         <div className="space-x-2">
@@ -278,6 +290,7 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            className="font-medium bg-emerald-500 text-white hover:bg-emerald-600 hover:text-white"
           >
             Previous
           </Button>
@@ -286,6 +299,7 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            className="font-medium bg-emerald-500 text-white hover:bg-emerald-600 hover:text-white"
           >
             Next
           </Button>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Clapperboard, ArrowUp } from "lucide-react";
+import { Clapperboard } from "lucide-react";
 import { getTotalAmountsByCategory } from "@/lib/actions";
 
 export default async function EntertainmentCard() {

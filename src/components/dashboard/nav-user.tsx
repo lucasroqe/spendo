@@ -34,7 +34,7 @@ export function NavUser({
     await authClient.signOut({
       fetchOptions: {
         onSuccess: () => {
-          router.push("/sign-in"); 
+          router.push("/"); 
         },
       },
     });
@@ -78,15 +78,11 @@ export function NavUser({
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem className="cursor-pointer">
+              {/* <DropdownMenuItem className="cursor-pointer">
                 <Sparkles />
                 Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => logOut()} className="cursor-pointer">

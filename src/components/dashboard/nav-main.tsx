@@ -22,14 +22,13 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
-      <SidebarMenu>
+      <SidebarMenu className="mt-2">
         {items.map((item) => (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild tooltip={item.title}>
               <a href={item.url}>
                 {item.icon && <item.icon/>}
-                <span>{item.title}</span>
+                <span className="text-base">{item.title}</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

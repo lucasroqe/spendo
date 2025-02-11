@@ -12,6 +12,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { authClient } from "@/lib/auth-client";
+import Link from "next/link";
 
 export function AppSidebar({ ...props }) {
   const [user, setUser] = useState({
@@ -50,9 +51,14 @@ export function AppSidebar({ ...props }) {
   return (
     <Sidebar {...props} variant="inset">
       <SidebarHeader>
-        <div className="flex flex-row items-center text-xl font-bold gap-3">
-          <CircleDollarSign className="text-emerald-500" size={32} />
-          <h2 className="font-semibold">Spendo</h2>
+        <div>
+          <Link
+            href="/dashboard"
+            className="flex flex-row items-center text-xl font-bold gap-3"
+          >
+            <CircleDollarSign className="text-emerald-500" size={32} />
+            <h2 className="font-semibold">Spendo</h2>
+          </Link>
         </div>
       </SidebarHeader>
       <SidebarContent>

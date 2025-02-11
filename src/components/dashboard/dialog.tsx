@@ -59,11 +59,10 @@ export function DialogDemo() {
   });
 
   async function onSubmit(data: FormType) {
-
     await createTransactions(data);
 
     console.log("onSubmit");
-    
+
     form.reset();
     router.refresh();
   }
@@ -71,14 +70,17 @@ export function DialogDemo() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">
+        <Button
+          className="font-medium bg-emerald-500 text-white hover:bg-emerald-600"
+          variant="none"
+        >
           <Plus />
           Create transaction
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>New transaction</DialogTitle>
+          <DialogTitle className="text-xl text-emerald-500">New transaction</DialogTitle>
           <DialogDescription>
             Add a new transaction to your profile. Click save when you're done.
           </DialogDescription>
@@ -128,12 +130,12 @@ export function DialogDemo() {
                   <FormLabel>Amount (R$)</FormLabel>
                   <FormControl>
                     <Input
-                    min={'1'}
+                      min={"1"}
                       placeholder="0.00"
                       {...field}
                       type="number"
                       onChange={(e) => {
-                        const value = e.target.value; 
+                        const value = e.target.value;
                         field.onChange(Number(value));
                       }}
                     />
@@ -199,7 +201,12 @@ export function DialogDemo() {
             />
 
             <DialogFooter>
-              <Button type="submit">Save transaction</Button>
+              <Button
+                className="font-medium bg-emerald-500 text-white hover:bg-emerald-600 hover:text-white"
+                type="submit"
+              >
+                Save transaction
+              </Button>
             </DialogFooter>
           </form>
         </Form>

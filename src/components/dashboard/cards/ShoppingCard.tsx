@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ShoppingCart, ArrowUp } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { getTotalAmountsByCategory } from "@/lib/actions";
 
 export default async function ShoppingCard() {

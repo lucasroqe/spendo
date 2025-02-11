@@ -1,6 +1,5 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
 import { Pie, PieChart } from "recharts"
 
 import {
@@ -55,7 +54,7 @@ export function PizzaCard({ data }: any) {
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
         <CardTitle>Composition of total expenditure</CardTitle>
-        <CardDescription className="py-4">January - December 2025</CardDescription>
+        <CardDescription className="py-4">January - December</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0 mt-5">
         <ChartContainer
@@ -93,7 +92,7 @@ export function PizzaCard({ data }: any) {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm h-screen">
         <div className="leading-none text-muted-foreground h-10">
-          Showing total amount per category
+          Showing total amount per category (2025)
         </div>
       </CardFooter>
     </Card>
