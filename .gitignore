@@ -1,4 +1,7 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Ignore SQLite database file
+prisma/dev.db
+prisma/dev.db-journal
+
 
 # dependencies
 /node_modules
