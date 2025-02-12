@@ -42,7 +42,17 @@ const chartConfig = {
   },  
 } satisfies ChartConfig
 
-export function PizzaCard({ data }: any) {
+interface Transaction {
+  category: string,
+  amount: number,
+  date: Date
+}
+
+interface TransactionsData {
+  data: Transaction[]
+}
+
+export function PizzaCard({ data }: TransactionsData) {
   
   const chartData = data.map((item: any) => ({
     category: item.category.toLowerCase(),
@@ -54,18 +64,19 @@ export function PizzaCard({ data }: any) {
     <Card className="flex flex-col h-full">
       <CardHeader className="items-center pb-0">
         <CardTitle>Composition of total expenditure</CardTitle>
-        <CardDescription className="py-4">January - December</CardDescription>
+        <CardDescription className="py-4">Showing total amount per category in 2025</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0 mt-5">
+      <CardContent className="flex-1 pb-0 ">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px] px-0"
+          className="mx-auto aspect-square max-h-[320px] px-0"
         >
-          <PieChart className="">
+          <PieChart>
             <ChartTooltip
               content={<ChartTooltipContent nameKey="category" hideLabel />}
             />
             <Pie
+            
               data={chartData}
               dataKey="value"
               labelLine={false}
@@ -90,11 +101,6 @@ export function PizzaCard({ data }: any) {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm h-screen">
-        <div className="leading-none text-muted-foreground h-10">
-          Showing total amount per category (2025)
-        </div>
-      </CardFooter>
     </Card>
   );
 }

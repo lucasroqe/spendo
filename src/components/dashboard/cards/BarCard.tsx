@@ -40,7 +40,17 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function BarCard({ data }: any) {
+interface Transaction {
+  category: string,
+  amount: number,
+  date: Date
+}
+
+interface TransactionsData {
+  data: Transaction[]
+}
+
+export function BarCard({ data }: TransactionsData) {
   const groupedData: Record<string, any> = {};
 
   data.forEach((transaction: any) => {
@@ -104,7 +114,7 @@ export function BarCard({ data }: any) {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for this year (2025)
+          Showing spending progress in 2025
         </div>
       </CardFooter>
     </Card>
