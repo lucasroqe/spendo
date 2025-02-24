@@ -1,5 +1,5 @@
-"use client";
-import clsx from "clsx";
+'use client'
+import clsx from 'clsx'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -11,11 +11,11 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-import * as React from "react";
+} from '@tanstack/react-table'
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react'
+import * as React from 'react'
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -23,7 +23,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu'
 import {
   Table,
   TableBody,
@@ -31,90 +31,91 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { DialogDemo } from "./dialog";
-import { deleteTransactions } from "@/lib/actions";
-import { useRouter } from "next/navigation";
+} from '@/components/ui/table'
+import { DialogDemo } from './dialog'
+import { deleteTransactions } from '@/lib/actions'
+import { useRouter } from 'next/navigation'
 
 export type Transaction = {
-  id: string;
-  category: "transport" | "food" | "shopping" | "entertainment" | "other";
-  amount: number;
-  description: string | null;
-  date: string;
-};
+  id: string
+  category: 'transport' | 'food' | 'shopping' | 'entertainment' | 'other'
+  amount: number
+  description: string | null
+  date: string
+}
 
 export const columns: ColumnDef<Transaction>[] = [
   {
-    id: "category",
-    accessorKey: "category",
-    header: "Category",
+    id: 'category',
+    accessorKey: 'category',
+    header: 'Category',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("category")}</div>
+      <div className="capitalize">{row.getValue('category')}</div>
     ),
   },
   {
-    id: "description",
-    accessorKey: "description",
-    header: "Description",
+    id: 'description',
+    accessorKey: 'description',
+    header: 'Description',
     cell: ({ row }) => (
-      <div className="capitalize ">{row.getValue("description")}</div>
+      <div className="capitalize">{row.getValue('description')}</div>
     ),
   },
   {
-    id: "date",
-    accessorKey: "date",
+    id: 'date',
+    accessorKey: 'date',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
-          className="p-0 w-fit"
+          className="w-fit p-0"
           onClick={() =>
-            (column as any).toggleSorting(column.getIsSorted() === "asc")
+            (column as any).toggleSorting(column.getIsSorted() === 'asc')
           }
         >
           Date
           <ArrowUpDown />
         </Button>
-      );
+      )
     },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("date")}</div>,
+    cell: ({ row }) => <div className="capitalize">{row.getValue('date')}</div>,
   },
   {
-    id: "amount",
-    accessorKey: "amount",
+    id: 'amount',
+    accessorKey: 'amount',
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
-          className="p-0 w-fit"
+          className="w-fit p-0"
           onClick={() =>
-            (column as any).toggleSorting(column.getIsSorted() === "asc")
+            (column as any).toggleSorting(column.getIsSorted() === 'asc')
           }
         >
           Amount
           <ArrowUpDown />
         </Button>
-      );
+      )
     },
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
+      const amount = parseFloat(row.getValue('amount'))
 
-      const formatted = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(amount);
+      const formatted = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(amount)
 
-      return <div className="capitalize">{formatted}</div>;
+      return <div className="capitalize">{formatted}</div>
     },
   },
   {
-    id: "actions",
+    id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const payment = row.original
 
-      const router = useRouter();
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const router = useRouter()
 
       return (
         <DropdownMenu>
@@ -133,37 +134,37 @@ export const columns: ColumnDef<Transaction>[] = [
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                deleteTransactions(payment.id);
-                router.refresh();
+                deleteTransactions(payment.id)
+                router.refresh()
               }}
             >
               Delete transition
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      );
+      )
     },
   },
-];
+]
 
 export const Transaction = {
   categories: [
-    "transport",
-    "food",
-    "shopping",
-    "entertainment",
-    "other",
+    'transport',
+    'food',
+    'shopping',
+    'entertainment',
+    'other',
   ] as const,
-};
+}
 
 export function DataTableDemo({ data }: { data: Transaction[] }) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+    [],
+  )
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+    React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
     data,
@@ -182,17 +183,17 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
       columnVisibility,
       rowSelection,
     },
-  });
+  })
 
   return (
     <div className="w-full">
-      <div className="flex py-4 justify-end space-x-10">
+      <div className="flex justify-end space-x-10 py-4">
         <DialogDemo />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="none"
-              className="font-medium bg-emerald-500 text-white hover:bg-emerald-600"
+              className="bg-emerald-500 font-medium text-white hover:bg-emerald-600"
             >
               Filter category <ChevronDown />
             </Button>
@@ -203,16 +204,16 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
                 key={category}
                 className="capitalize"
                 checked={
-                  table.getColumn("category")?.getFilterValue() === category
+                  table.getColumn('category')?.getFilterValue() === category
                 }
                 onCheckedChange={() => {
                   table
-                    .getColumn("category")
+                    .getColumn('category')
                     ?.setFilterValue(
-                      table.getColumn("category")?.getFilterValue() === category
-                        ? ""
-                        : category
-                    );
+                      table.getColumn('category')?.getFilterValue() === category
+                        ? ''
+                        : category,
+                    )
                 }}
               >
                 {category}
@@ -234,10 +235,10 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
-                  );
+                  )
                 })}
               </TableRow>
             ))}
@@ -247,13 +248,14 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                  data-state={row.getIsSelected() && 'selected'}
                   className={clsx('text-base', {
-                    'border-x-4 border-b-0': true, 
+                    'border-x-4 border-y-slate-300': true,
                     'border-blue-400': row.original.category === 'transport',
                     'border-red-400': row.original.category === 'food',
                     'border-orange-400': row.original.category === 'shopping',
-                    'border-green-400': row.original.category === 'entertainment',
+                    'border-green-400':
+                      row.original.category === 'entertainment',
                     'border-gray-400': row.original.category === 'other',
                   })}
                 >
@@ -261,7 +263,7 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -290,7 +292,7 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="font-medium bg-emerald-500 text-white hover:bg-emerald-600 hover:text-white"
+            className="bg-emerald-500 font-medium text-white hover:bg-emerald-600 hover:text-white"
           >
             Previous
           </Button>
@@ -299,12 +301,12 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="font-medium bg-emerald-500 text-white hover:bg-emerald-600 hover:text-white"
+            className="bg-emerald-500 font-medium text-white hover:bg-emerald-600 hover:text-white"
           >
             Next
           </Button>
         </div>
       </div>
     </div>
-  );
+  )
 }

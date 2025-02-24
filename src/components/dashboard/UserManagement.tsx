@@ -1,21 +1,21 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
-import { authClient } from "@/lib/auth-client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { KeyRound, Loader2 } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { PasswordSchema } from "@/lib/zod";
+'use client'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { useToast } from '@/hooks/use-toast'
+import { authClient } from '@/lib/auth-client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { KeyRound, Loader2 } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { PasswordSchema } from '@/lib/zod'
 
-type PasswordFormData = z.infer<typeof PasswordSchema>;
+type PasswordFormData = z.infer<typeof PasswordSchema>
 
 export default function App() {
-  const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
+  const [loading, setLoading] = useState(false)
+  const { toast } = useToast()
 
   const {
     register,
@@ -24,7 +24,7 @@ export default function App() {
     reset,
   } = useForm<PasswordFormData>({
     resolver: zodResolver(PasswordSchema),
-  });
+  })
 
   async function onSubmit(data: PasswordFormData) {
     await authClient.changePassword(
@@ -35,31 +35,30 @@ export default function App() {
       },
       {
         onRequest: () => {
-          setLoading(true);
+          setLoading(true)
         },
         onSuccess: () => {
           toast({
-            title: "Password updated successfully",
-            description:
-              "Your password has been changed.",
-            variant: "success",
-          });
-          reset();
+            title: 'Password updated successfully',
+            description: 'Your password has been changed.',
+            variant: 'success',
+          })
+          reset()
         },
         onError: () => {
           toast({
-            title: "Failed to update password",
-            description: "Please check your current password and try again.",
-            variant: "destructive",
-          });
+            title: 'Failed to update password',
+            description: 'Please check your current password and try again.',
+            variant: 'destructive',
+          })
         },
-      }
-    );
+      },
+    )
   }
 
   return (
     <div className="min-h-screen p-6">
-      <div className=" max-w-3xl">
+      <div className="max-w-3xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight">
             Account settings
@@ -79,8 +78,8 @@ export default function App() {
               <Input
                 id="oldPassword"
                 type="password"
-                {...register("oldPassword")}
-                className={errors.oldPassword ? "border-destructive" : ""}
+                {...register('oldPassword')}
+                className={errors.oldPassword ? 'border-destructive' : ''}
               />
               {errors.oldPassword && (
                 <p className="text-sm text-destructive">
@@ -94,8 +93,8 @@ export default function App() {
               <Input
                 id="password"
                 type="password"
-                {...register("password")}
-                className={errors.password ? "border-destructive" : ""}
+                {...register('password')}
+                className={errors.password ? 'border-destructive' : ''}
               />
               {errors.password && (
                 <p className="text-sm text-destructive">
@@ -109,8 +108,8 @@ export default function App() {
               <Input
                 id="confirmPassword"
                 type="password"
-                {...register("confirmPassword")}
-                className={errors.confirmPassword ? "border-destructive" : ""}
+                {...register('confirmPassword')}
+                className={errors.confirmPassword ? 'border-destructive' : ''}
               />
               {errors.confirmPassword && (
                 <p className="text-sm text-destructive">
@@ -130,12 +129,12 @@ export default function App() {
                   Updating password...
                 </>
               ) : (
-                "Update password"
+                'Update password'
               )}
             </Button>
           </form>
         </div>
       </div>
     </div>
-  );
+  )
 }

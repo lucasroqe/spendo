@@ -1,14 +1,13 @@
-"use client"
+'use client'
 
-import { TypeIcon as type, type LucideIcon } from "lucide-react"
+import { LucideIcon } from 'lucide-react'
 
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar'
 
 export function NavMain({
   items,
@@ -27,7 +26,7 @@ export function NavMain({
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild tooltip={item.title}>
               <a href={item.url}>
-                {item.icon && <item.icon/>}
+                {item.icon && <item.icon />}
                 <span className="text-base">{item.title}</span>
               </a>
             </SidebarMenuButton>

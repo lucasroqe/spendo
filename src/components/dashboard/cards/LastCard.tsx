@@ -1,5 +1,5 @@
-"use client";
-import clsx from "clsx";
+'use client'
+import clsx from 'clsx'
 import {
   ColumnDef,
   SortingState,
@@ -10,8 +10,8 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import * as React from "react";
+} from '@tanstack/react-table'
+import * as React from 'react'
 
 import {
   Table,
@@ -20,7 +20,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table'
 import {
   Card,
   CardContent,
@@ -28,76 +28,76 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card'
 
 export type Transaction = {
-  id: string;
-  category: "transport" | "food" | "shopping" | "entertainment" | "other";
-  amount: number;
-  description: string | null;
-  date: string;
-};
+  id: string
+  category: 'transport' | 'food' | 'shopping' | 'entertainment' | 'other'
+  amount: number
+  description: string | null
+  date: string
+}
 
 export const columns: ColumnDef<Transaction>[] = [
   {
-    id: "category",
-    accessorKey: "category",
-    header: "Category",
+    id: 'category',
+    accessorKey: 'category',
+    header: 'Category',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("category")}</div>
+      <div className="capitalize">{row.getValue('category')}</div>
     ),
   },
   {
-    id: "description",
-    accessorKey: "description",
-    header: "Description",
+    id: 'description',
+    accessorKey: 'description',
+    header: 'Description',
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("description")}</div>
+      <div className="capitalize">{row.getValue('description')}</div>
     ),
   },
   {
-    id: "date",
-    accessorKey: "date",
-    header: "Date",
+    id: 'date',
+    accessorKey: 'date',
+    header: 'Date',
     cell: ({ row }) => {
-      const date = new Date(row.getValue("date"));
+      const date = new Date(row.getValue('date'))
 
-      return <div>{date.toLocaleDateString("pt-br")}</div>;
+      return <div>{date.toLocaleDateString('pt-br')}</div>
     },
   },
   {
-    id: "amount",
-    accessorKey: "amount",
-    header: "Amount",
+    id: 'amount',
+    accessorKey: 'amount',
+    header: 'Amount',
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
+      const amount = parseFloat(row.getValue('amount'))
 
-      const formatted = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(amount);
+      const formatted = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(amount)
 
-      return <div className="font-medium">{formatted}</div>;
+      return <div className="font-medium">{formatted}</div>
     },
   },
-];
+]
 
 export const Transaction = {
   categories: [
-    "transport",
-    "food",
-    "shopping",
-    "entertainment",
-    "other",
+    'transport',
+    'food',
+    'shopping',
+    'entertainment',
+    'other',
   ] as const,
-};
+}
 
 export function LastCard({ data }: { data: Transaction[] }) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([])
 
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+    React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
     data: data ?? [],
@@ -118,10 +118,10 @@ export function LastCard({ data }: { data: Transaction[] }) {
         pageSize: 5,
       },
     },
-  });
+  })
 
   return (
-    <Card className="flex flex-col h-full">
+    <Card className="flex h-full flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Transaction table</CardTitle>
         <CardDescription className="py-4">
@@ -141,10 +141,10 @@ export function LastCard({ data }: { data: Transaction[] }) {
                           ? null
                           : flexRender(
                               header.column.columnDef.header,
-                              header.getContext()
+                              header.getContext(),
                             )}
                       </TableHead>
-                    );
+                    )
                   })}
                 </TableRow>
               ))}
@@ -154,21 +154,22 @@ export function LastCard({ data }: { data: Transaction[] }) {
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  className={clsx('text-base', {
-                    'border-x-4 border-b-0': true, 
-                    'border-blue-400': row.original.category === 'transport',
-                    'border-red-400': row.original.category === 'food',
-                    'border-orange-400': row.original.category === 'shopping',
-                    'border-green-400': row.original.category === 'entertainment',
-                    'border-gray-400': row.original.category === 'other',
-                  })}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className={clsx('text-base', {
+                      'border-x-4 border-y-slate-300': true,
+                      'border-blue-400': row.original.category === 'transport',
+                      'border-red-400': row.original.category === 'food',
+                      'border-orange-400': row.original.category === 'shopping',
+                      'border-green-400':
+                        row.original.category === 'entertainment',
+                      'border-gray-400': row.original.category === 'other',
+                    })}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </TableCell>
                     ))}
@@ -194,5 +195,5 @@ export function LastCard({ data }: { data: Transaction[] }) {
         </div> */}
       </CardFooter>
     </Card>
-  );
+  )
 }

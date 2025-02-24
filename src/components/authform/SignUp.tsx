@@ -1,41 +1,41 @@
-"use client";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+'use client'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Link from "next/link";
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import Link from 'next/link'
 
-import { useForm } from "react-hook-form";
-import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useForm } from 'react-hook-form'
+import { useToast } from '@/hooks/use-toast'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 
-import { AuthSchema } from "@/lib/zod";
-import { LoaderCircle, Eye, EyeOff} from 'lucide-react';
+import { AuthSchema } from '@/lib/zod'
+import { LoaderCircle, Eye, EyeOff } from 'lucide-react'
 
-import { authClient } from "@/lib/auth-client";
+import { authClient } from '@/lib/auth-client'
 
 export function SignUp({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
-    const { toast } = useToast()
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
+}: React.ComponentPropsWithoutRef<'div'>) {
+  const { toast } = useToast()
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
-  type RegisterType = z.infer<typeof AuthSchema>;
+  type RegisterType = z.infer<typeof AuthSchema>
 
   const {
     register,
@@ -43,76 +43,80 @@ export function SignUp({
     formState: { errors },
   } = useForm<RegisterType>({
     resolver: zodResolver(AuthSchema),
-    mode: "onSubmit",
-  });
+    mode: 'onSubmit',
+  })
 
   async function onSubmit(data: RegisterType) {
     await authClient.signUp.email(
       {
         email: data.email,
         password: data.password,
-        name: "",
+        name: '',
       },
       {
         onRequest: () => {
-          setLoading(true);
+          setLoading(true)
         },
         onSuccess: () => {
-          setLoading(false);
-          console.log("usuario cadastrado", data);
+          setLoading(false)
+          console.log('usuario cadastrado', data)
           toast({
-            title: "Registration Successful",
+            title: 'Registration Successful',
             description:
-              "Your account has been created. Redirecting to login page...",
-            variant: "success",
-          });
+              'Your account has been created. Redirecting to login page...',
+            variant: 'success',
+          })
           setTimeout(() => {
-            router.push("/sign-in");
-          }, 1500);
+            router.push('/sign-in')
+          }, 1500)
         },
-        onError: (ctx:any) => {
-          setLoading(false);
+        onError: (ctx: any) => {
+          setLoading(false)
           toast({
             description: ctx.error.message,
-          });
+          })
         },
-      }
-    );
+      },
+    )
   }
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl text-emerald-500">Register</CardTitle>
-            <CardDescription>
+          <CardDescription>
             Enter your email and password below to register your account.
-            </CardDescription>
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
-                <Label htmlFor="email" className="text-emerald-900">Email</Label>
+                <Label htmlFor="email" className="text-emerald-900">
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="m@example.com"
                   required
-                  {...register("email")}
+                  {...register('email')}
                 />
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password" className="text-emerald-900">Password</Label>
+                  <Label htmlFor="password" className="text-emerald-900">
+                    Password
+                  </Label>
                 </div>
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Enter your password"
                     required
-                    {...register("password")}
+                    {...register('password')}
                   />
                   <button
                     type="button"
@@ -127,7 +131,7 @@ export function SignUp({
                   </button>
                 </div>
                 {(errors.password || errors.email) && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-sm text-red-500">
                     {errors.email?.message && (
                       <span>{errors.email.message}</span>
                     )}
@@ -138,17 +142,24 @@ export function SignUp({
                   </p>
                 )}
               </div>
-              <Button disabled={loading} type="submit" className="w-full bg-emerald-500 text-white hover:bg-emerald-600">
+              <Button
+                disabled={loading}
+                type="submit"
+                className="w-full bg-emerald-500 text-white hover:bg-emerald-600"
+              >
                 {loading ? (
                   <LoaderCircle size={16} className="animate-spin" />
                 ) : (
-                  "Register"
+                  'Register'
                 )}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <Link href="/sign-in" className="underline underline-offset-4 text-emerald-900">
+              Already have an account?{' '}
+              <Link
+                href="/sign-in"
+                className="text-emerald-900 underline underline-offset-4"
+              >
                 Sign in
               </Link>
             </div>
@@ -156,5 +167,5 @@ export function SignUp({
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

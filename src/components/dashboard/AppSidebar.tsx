@@ -1,52 +1,59 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { CircleDollarSign, Settings2, ChartBar, HandCoins } from "lucide-react";
-import { NavMain } from "./nav-main";
-import { NavUser } from "./nav-user";
+import { useEffect, useState } from 'react'
+import {
+  CircleDollarSign,
+  Settings2,
+  ChartBar,
+  HandCoins,
+  Sparkles,
+} from 'lucide-react'
+import { NavMain } from './nav-main'
+import { NavUser } from './nav-user'
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar";
-import { authClient } from "@/lib/auth-client";
-import Link from "next/link";
+} from '@/components/ui/sidebar'
+import { authClient } from '@/lib/auth-client'
+import Link from 'next/link'
 
 export function AppSidebar({ ...props }) {
   const [user, setUser] = useState({
-    name: "",
-    email: "",
-    avatar: "",
-  });
+    name: '',
+    email: '',
+    avatar: '',
+  })
 
   useEffect(() => {
     const fetchSession = async () => {
-      const session = await authClient.getSession();
+      const session = await authClient.getSession()
 
       setUser({
-        name: session.data?.user.name ?? "",
-        email: session.data?.user.email ?? "",
-        avatar: session.data?.user.name ?? "",
-      });
-    };
+        name: session.data?.user.name ?? '',
+        email: session.data?.user.email ?? '',
+        avatar: session.data?.user.name ?? '',
+      })
+    }
 
-    fetchSession();
-  }, []);
+    fetchSession()
+  }, [])
 
   const data = {
     user,
     navMain: [
-      { title: "Dashboard", url: "/dashboard", icon: ChartBar, isActive: true },
+      { title: 'Dashboard', url: '/dashboard', icon: ChartBar, isActive: true },
       {
-        title: "Transactions",
-        url: "/dashboard/transactions",
+        title: 'Transactions',
+        url: '/dashboard/transactions',
         icon: HandCoins,
       },
-      { title: "Settings", url: "/dashboard/settings", icon: Settings2 },
+      { title: 'Settings', url: '/dashboard/settings', icon: Settings2 },
+      { title: 'AI Assistent', url: '/dashboard/assistent', icon: Sparkles },
     ],
-  };
+  }
 
   return (
     <Sidebar {...props} variant="inset">
@@ -54,7 +61,7 @@ export function AppSidebar({ ...props }) {
         <div>
           <Link
             href="/dashboard"
-            className="flex flex-row items-center text-xl font-bold gap-3"
+            className="flex flex-row items-center gap-3 text-xl font-bold"
           >
             <CircleDollarSign className="text-emerald-500" size={32} />
             <h2 className="font-semibold">Spendo</h2>
@@ -69,5 +76,5 @@ export function AppSidebar({ ...props }) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  );
+  )
 }

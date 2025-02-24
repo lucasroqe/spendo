@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import {
   Dialog,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -16,62 +16,62 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Input } from "@/components/ui/input";
-import { CalendarIcon, Plus } from "lucide-react";
+} from '@/components/ui/popover'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import { Input } from '@/components/ui/input'
+import { CalendarIcon, Plus } from 'lucide-react'
 
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { format } from 'date-fns'
+import { cn } from '@/lib/utils'
 
-import { FormSchema } from "@/lib/zod";
-import * as React from "react";
-import { createTransactions } from "@/lib/actions";
-import { useRouter } from "next/navigation";
+import { FormSchema } from '@/lib/zod'
+import * as React from 'react'
+import { createTransactions } from '@/lib/actions'
+import { useRouter } from 'next/navigation'
 
 export function DialogDemo() {
-  const router = useRouter();
+  const router = useRouter()
 
-  type FormType = z.infer<typeof FormSchema>;
+  type FormType = z.infer<typeof FormSchema>
 
   const form = useForm<FormType>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       amount: 0,
-      description: "",
+      description: '',
     },
-  });
+  })
 
   async function onSubmit(data: FormType) {
-    await createTransactions(data);
+    await createTransactions(data)
 
-    console.log("onSubmit");
+    console.log('onSubmit')
 
-    form.reset();
-    router.refresh();
+    form.reset()
+    router.refresh()
   }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className="font-medium bg-emerald-500 text-white hover:bg-emerald-600"
+          className="bg-emerald-500 font-medium text-white hover:bg-emerald-600"
           variant="none"
         >
           <Plus />
@@ -80,9 +80,12 @@ export function DialogDemo() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-xl text-emerald-500">New transaction</DialogTitle>
+          <DialogTitle className="text-xl text-emerald-500">
+            New transaction
+          </DialogTitle>
           <DialogDescription>
-            Add a new transaction to your profile. Click save when you're done.
+            Add a new transaction to your profile. Click save when you&apos;re
+            done.
           </DialogDescription>
         </DialogHeader>
 
@@ -130,13 +133,13 @@ export function DialogDemo() {
                   <FormLabel>Amount (R$)</FormLabel>
                   <FormControl>
                     <Input
-                      min={"1"}
+                      min={'1'}
                       placeholder="0.00"
                       {...field}
                       type="number"
                       onChange={(e) => {
-                        const value = e.target.value;
-                        field.onChange(Number(value));
+                        const value = e.target.value
+                        field.onChange(Number(value))
                       }}
                     />
                   </FormControl>
@@ -155,14 +158,14 @@ export function DialogDemo() {
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
-                          variant={"outline"}
+                          variant={'outline'}
                           className={cn(
-                            "w-[240px] pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            'w-[240px] pl-3 text-left font-normal',
+                            !field.value && 'text-muted-foreground',
                           )}
                         >
                           {field.value ? (
-                            format(field.value, "PPP")
+                            format(field.value, 'PPP')
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -176,7 +179,7 @@ export function DialogDemo() {
                         selected={field.value}
                         onSelect={field.onChange}
                         disabled={(date) =>
-                          date > new Date() || date < new Date("1900-01-01")
+                          date > new Date() || date < new Date('1900-01-01')
                         }
                       />
                     </PopoverContent>
@@ -202,7 +205,7 @@ export function DialogDemo() {
 
             <DialogFooter>
               <Button
-                className="font-medium bg-emerald-500 text-white hover:bg-emerald-600 hover:text-white"
+                className="bg-emerald-500 font-medium text-white hover:bg-emerald-600 hover:text-white"
                 type="submit"
               >
                 Save transaction
@@ -212,5 +215,5 @@ export function DialogDemo() {
         </Form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

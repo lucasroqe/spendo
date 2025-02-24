@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 import {
   Card,
   CardContent,
@@ -8,41 +8,40 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card'
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
-
+} from '@/components/ui/chart'
 
 const chartConfig = {
   transport: {
-    label: "Transport",
-    color: "#3b82f6",
+    label: 'Transport',
+    color: '#3b82f6',
   },
   shopping: {
-    label: "Shopping",
-    color: "#f97316",
+    label: 'Shopping',
+    color: '#f97316',
   },
   others: {
-    label: "Others",
-    color: "#64748b",
+    label: 'Others',
+    color: '#64748b',
   },
   food: {
-    label: "Food",
-    color: "#dc2626",
+    label: 'Food',
+    color: '#dc2626',
   },
   entertainment: {
-    label: "Entertainment",
-    color: "#22c55e",
+    label: 'Entertainment',
+    color: '#22c55e',
   },
-} satisfies ChartConfig;
+} satisfies ChartConfig
 
 interface Transaction {
-  category: string,
-  amount: number,
+  category: string
+  amount: number
   date: Date
 }
 
@@ -51,26 +50,25 @@ interface TransactionsData {
 }
 
 export function BarCard({ data }: TransactionsData) {
-  const groupedData: Record<string, any> = {};
+  const groupedData: Record<string, any> = {}
 
   data.forEach((transaction: any) => {
-    
-    const { date, category, amount } = transaction;
+    const { date, category, amount } = transaction
 
     if (!groupedData[date]) {
-      groupedData[date] = { date };
+      groupedData[date] = { date }
     }
 
-    const categoryKey = category.toLowerCase();
+    const categoryKey = category.toLowerCase()
 
     if (!groupedData[date][categoryKey]) {
-      groupedData[date][categoryKey] = 0;
+      groupedData[date][categoryKey] = 0
     }
 
-    groupedData[date][categoryKey] += amount;
-  });
+    groupedData[date][categoryKey] += amount
+  })
 
-  const chartData = Object.values(groupedData);
+  const chartData = Object.values(groupedData)
 
   return (
     <Card className="w-full">
@@ -118,5 +116,5 @@ export function BarCard({ data }: TransactionsData) {
         </div>
       </CardFooter>
     </Card>
-  );
+  )
 }

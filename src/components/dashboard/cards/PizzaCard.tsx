@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { Pie, PieChart } from "recharts"
+import { Pie, PieChart } from 'recharts'
 
 import {
   Card,
@@ -9,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card'
 import {
   ChartConfig,
   ChartContainer,
@@ -17,34 +17,34 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
+} from '@/components/ui/chart'
 
 const chartConfig = {
   transport: {
-    label: "Transport",
-    color: "#3b82f6",
+    label: 'Transport',
+    color: '#3b82f6',
   },
   shopping: {
-    label: "Shopping",
-    color: "#f97316",
+    label: 'Shopping',
+    color: '#f97316',
   },
   other: {
-    label: "Others",
-    color: "#64748b",
+    label: 'Others',
+    color: '#64748b',
   },
   food: {
-    label: "Food",
-    color: "#dc2626",
+    label: 'Food',
+    color: '#dc2626',
   },
   entertainment: {
-    label: "Entertainment",
-    color: "#22c55e",
-  },  
+    label: 'Entertainment',
+    color: '#22c55e',
+  },
 } satisfies ChartConfig
 
 interface Transaction {
-  category: string,
-  amount: number,
+  category: string
+  amount: number
   date: Date
 }
 
@@ -53,20 +53,22 @@ interface TransactionsData {
 }
 
 export function PizzaCard({ data }: TransactionsData) {
-  
   const chartData = data.map((item: any) => ({
     category: item.category.toLowerCase(),
     value: item._sum.amount,
-    fill: chartConfig[item.category as keyof typeof chartConfig]?.color || "#000",
-  }));
+    fill:
+      chartConfig[item.category as keyof typeof chartConfig]?.color || '#000',
+  }))
 
   return (
-    <Card className="flex flex-col h-full">
+    <Card className="flex h-full flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Composition of total expenditure</CardTitle>
-        <CardDescription className="py-4">Showing total amount per category in 2025</CardDescription>
+        <CardDescription className="py-4">
+          Showing total amount per category in 2025
+        </CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 pb-0 ">
+      <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square max-h-[320px] px-0"
@@ -76,7 +78,6 @@ export function PizzaCard({ data }: TransactionsData) {
               content={<ChartTooltipContent nameKey="category" hideLabel />}
             />
             <Pie
-            
               data={chartData}
               dataKey="value"
               labelLine={false}
@@ -93,14 +94,17 @@ export function PizzaCard({ data }: TransactionsData) {
                   >
                     {payload.value}
                   </text>
-                );
+                )
               }}
               nameKey="category"
             />
-            <ChartLegend content={<ChartLegendContent nameKey="category" />} className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"/>
+            <ChartLegend
+              content={<ChartLegendContent nameKey="category" />}
+              className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+            />
           </PieChart>
         </ChartContainer>
       </CardContent>
     </Card>
-  );
+  )
 }

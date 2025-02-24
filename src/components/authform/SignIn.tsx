@@ -1,45 +1,45 @@
-"use client";
-import { Button } from "@/components/ui/button";
+'use client'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { useState } from 'react'
+import { useToast } from '@/hooks/use-toast'
 
-import { AuthSchema } from "@/lib/zod";
-import { z } from "zod";
-import { authClient } from "@/lib/auth-client";
-import { LoaderCircle, Eye, EyeOff } from "lucide-react";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { AuthSchema } from '@/lib/zod'
+import { z } from 'zod'
+import { authClient } from '@/lib/auth-client'
+import { LoaderCircle, Eye, EyeOff } from 'lucide-react'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 export function SignIn({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
-  type RegisterType = z.infer<typeof AuthSchema>;
-  const { toast } = useToast();
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+}: React.ComponentPropsWithoutRef<'div'>) {
+  type RegisterType = z.infer<typeof AuthSchema>
+  const { toast } = useToast()
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterType>({
     resolver: zodResolver(AuthSchema),
-    mode: "onSubmit",
-  });
+    mode: 'onSubmit',
+  })
 
   async function onSubmit(data: RegisterType) {
     await authClient.signIn.email(
@@ -49,34 +49,34 @@ export function SignIn({
       },
       {
         onRequest: () => {
-          setLoading(true);
+          setLoading(true)
         },
         onSuccess: () => {
-          setLoading(false);
+          setLoading(false)
           toast({
-            title: "Welcome back!",
-            description: "Redirecting you to your dashboard!",
-            variant: "success",
-          });
+            title: 'Welcome back!',
+            description: 'Redirecting you to your dashboard!',
+            variant: 'success',
+          })
           setTimeout(() => {
-            router.push("/dashboard");
-          }, 1500);
+            router.push('/dashboard')
+          }, 1500)
         },
-        onError: (ctx: any) => {
-          setLoading(false);
+        onError: () => {
+          setLoading(false)
           toast({
-            title: "Something went wrong!",
+            title: 'Something went wrong!',
             description:
-              "Your account could not be accessed. Please try again later!",
-            variant: "destructive",
-          });
+              'Your account could not be accessed. Please try again later!',
+            variant: 'destructive',
+          })
         },
-      }
-    );
+      },
+    )
   }
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl text-emerald-500">Login</CardTitle>
@@ -96,7 +96,7 @@ export function SignIn({
                   type="email"
                   placeholder="m@example.com"
                   required
-                  {...register("email")}
+                  {...register('email')}
                 />
               </div>
               <div className="grid gap-2">
@@ -108,10 +108,10 @@ export function SignIn({
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Enter your password"
                     required
-                    {...register("password")}
+                    {...register('password')}
                   />
                   <button
                     type="button"
@@ -126,7 +126,7 @@ export function SignIn({
                   </button>
                 </div>
                 {(errors.password || errors.email) && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-sm text-red-500">
                     {errors.email?.message && (
                       <span>{errors.email.message}</span>
                     )}
@@ -145,15 +145,15 @@ export function SignIn({
                 {loading ? (
                   <LoaderCircle size={16} className="animate-spin" />
                 ) : (
-                  "Login"
+                  'Login'
                 )}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
+              Don&apos;t have an account?{' '}
               <Link
                 href="/sign-up"
-                className="underline underline-offset-4 text-emerald-900"
+                className="text-emerald-900 underline underline-offset-4"
               >
                 Sign up
               </Link>
@@ -162,5 +162,5 @@ export function SignIn({
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
