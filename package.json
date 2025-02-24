@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.1.16",
     "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.3.0",
     "@radix-ui/react-accordion": "^1.2.2",
@@ -40,6 +41,7 @@
     "@radix-ui/react-tooltip": "^1.1.7",
     "@tanstack/react-query": "^5.66.0",
     "@tanstack/react-table": "^8.20.6",
+    "ai": "^4.1.45",
     "bcrypt": "^5.1.1",
     "better-auth": "^1.1.15",
     "class-variance-authority": "^0.7.1",
@@ -55,6 +57,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "react-markdown": "^10.0.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "^2.15.1",
     "sonner": "^1.7.4",

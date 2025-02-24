@@ -51,7 +51,7 @@ export function AppSidebar({ ...props }) {
         icon: HandCoins,
       },
       { title: 'Settings', url: '/dashboard/settings', icon: Settings2 },
-      { title: 'AI Assistent', url: '/dashboard/assistent', icon: Sparkles },
+      { title: 'AI Assistant', url: '/dashboard/assistant', icon: Sparkles },
     ],
   }
 
