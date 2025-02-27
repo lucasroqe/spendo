@@ -131,7 +131,7 @@ export function LastCard({ data }: { data: Transaction[] }) {
       <CardContent>
         <div className="rounded-md border">
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-headerRow">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -156,7 +156,7 @@ export function LastCard({ data }: { data: Transaction[] }) {
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
                     className={clsx('text-base', {
-                      'border-x-4 border-y-slate-300': true,
+                      'bg-row border-x-4 border-y-slate-300': true,
                       'border-blue-400': row.original.category === 'transport',
                       'border-red-400': row.original.category === 'food',
                       'border-orange-400': row.original.category === 'shopping',

@@ -1,4 +1,4 @@
-import { DataTableDemo } from '@/components/dashboard/data-table'
+import { DataTableDemo } from '@/components/dashboard/DataTable'
 import { getUsersTransactions } from '@/lib/actions'
 
 export default async function Transactions() {
