@@ -5,6 +5,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
+import { ThemeProvider } from 'next-themes'
 
 import { cookies } from 'next/headers'
 
@@ -17,7 +18,7 @@ export default async function Layout({
   const defaultOpen = cookieStore.get('sidebar:state')?.value === 'true'
 
   return (
-    <SidebarProvider defaultOpen={defaultOpen}>
+    <SidebarProvider defaultOpen={defaultOpen} suppressHydrationWarning>
       <AppSidebar />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -26,7 +27,15 @@ export default async function Layout({
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <main>{children}</main>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            storageKey="theme"
+          >
+            {children}
+          </ThemeProvider>
         </div>
       </SidebarInset>
     </SidebarProvider>

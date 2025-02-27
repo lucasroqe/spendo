@@ -61,13 +61,13 @@ export default function App() {
       <div className="max-w-3xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight">
-            Account settings
+            Dashboard settings
           </h1>
         </div>
         <div>
           <div className="flex items-center gap-2 text-lg font-semibold">
             <KeyRound className="h-5 w-5" />
-            <h2>Change Password</h2>
+            <h2>Change your password</h2>
           </div>
           <p className="mt-2 text-sm text-muted-foreground">
             Password must be at least 5 characters

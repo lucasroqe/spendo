@@ -1,7 +1,6 @@
 import { initialAiMessage } from '@/lib/ai-data'
 import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { streamText } from 'ai'
-
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/lib/auth'
 import { headers } from 'next/headers'
@@ -14,6 +13,7 @@ const google = createGoogleGenerativeAI({
 
 const systemMessage = {
   role: 'system',
+
   content: initialAiMessage.content,
 }
 
@@ -32,6 +32,7 @@ export async function POST(req: Request) {
 
   const totalSum = userExpenses.reduce(
     (acc, transaction) => acc + transaction.amount,
+
     0,
   )
 
@@ -39,16 +40,21 @@ export async function POST(req: Request) {
 
   const fullMessages = [
     systemMessage,
+
     ...messages,
+
     {
       role: 'user',
+
       content: JSON.stringify({ transactions: userExpenses, totalSum }),
     },
   ]
 
   const result = streamText({
     model: google('gemini-2.0-flash'),
+
     messages: fullMessages,
+
     temperature: 0.15,
   })
 
