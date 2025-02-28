@@ -1,6 +1,6 @@
 import { betterFetch } from '@better-fetch/fetch'
 import type { auth } from '@/lib/auth'
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 type Session = typeof auth.$Infer.Session
 
@@ -15,10 +15,10 @@ export default async function authMiddleware(request: NextRequest) {
     },
   )
 
-  // if (!session) {
-  // 	return NextResponse.redirect(new URL("/sign-in", request.url));
-  // }
-  // return NextResponse.next();
+  if (!session) {
+    return NextResponse.redirect(new URL('/sign-in', request.url))
+  }
+  return NextResponse.next()
 }
 
 export const config = {

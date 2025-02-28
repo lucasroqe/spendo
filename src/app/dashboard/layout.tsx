@@ -29,8 +29,7 @@ export default async function Layout({
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
-            enableSystem
+            defaultTheme="light"
             disableTransitionOnChange
             storageKey="theme"
           >

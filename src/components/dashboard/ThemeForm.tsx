@@ -78,19 +78,18 @@ export function AppearanceForm() {
 
   return (
     <div className="max-h-screen p-6">
-      <Form {...form}>
-        <div className="max-w-3xl">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight">User settings</h1>
-          </div>
-          <div className="mb-4">
-            <div className="flex items-center gap-2 text-lg font-semibold">
-              <SunMoon className="h-5 w-5" />
-              <h2>Change your theme</h2>
-            </div>
+      <div className="max-w-3xl">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold tracking-tight">User settings</h1>
+        </div>
+        <div className="mb-4">
+          <div className="flex items-center gap-2 text-lg font-semibold">
+            <SunMoon className="h-5 w-5" />
+            <h2>Change your theme</h2>
           </div>
         </div>
-
+      </div>
+      <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-8">
           <FormField
             control={form.control}

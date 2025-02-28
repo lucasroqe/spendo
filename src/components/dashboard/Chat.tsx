@@ -47,7 +47,7 @@ export default function Chat() {
                 className={`inline-block max-w-[75%] rounded-lg p-3 shadow ${
                   m.role === 'user'
                     ? 'bg-emerald-500 text-white'
-                    : 'text-text bg-secondary'
+                    : 'bg-secondary text-text'
                 }`}
               >
                 <div className="text-base/8 tracking-wide">
