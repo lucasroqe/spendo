@@ -10,11 +10,12 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
+import type { Category } from '@prisma/client'
 
 const chartConfig = {
   transport: {
@@ -40,16 +41,22 @@ const chartConfig = {
 } satisfies ChartConfig
 
 interface Transaction {
-  category: string
+  category: Category
   amount: number
-  date: Date
+  date: string
+  id?: string
+  createdAt?: Date | null
+  updatedAt?: Date | null
+  userId?: string
+  description?: string | null
 }
 
 interface TransactionsData {
   data: Transaction[]
+  dateFilter?: 'total' | '3months' | '30days'
 }
 
-export function BarCard({ data }: TransactionsData) {
+export function BarCard({ data, dateFilter = 'total' }: TransactionsData) {
   const groupedData: Record<string, any> = {}
 
   data.forEach((transaction: any) => {
@@ -70,11 +77,18 @@ export function BarCard({ data }: TransactionsData) {
 
   const chartData = Object.values(groupedData)
 
+  let descriptionText = 'January - December'
+  if (dateFilter === '3months') {
+    descriptionText = 'Last 3 months'
+  } else if (dateFilter === '30days') {
+    descriptionText = 'Last 30 days'
+  }
+
   return (
     <Card className="w-full">
       <CardHeader>
         <CardTitle>Spending distribution</CardTitle>
-        <CardDescription>January - December</CardDescription>
+        <CardDescription>{descriptionText}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-96 w-full">
@@ -112,7 +126,9 @@ export function BarCard({ data }: TransactionsData) {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="leading-none text-muted-foreground">
-          Showing spending progress in 2025
+          {dateFilter === 'total'
+            ? 'Showing spending progress in 2025'
+            : `Showing spending progress for ${descriptionText.toLowerCase()}`}
         </div>
       </CardFooter>
     </Card>

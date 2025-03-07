@@ -250,7 +250,7 @@ export function DataTableDemo({ data }: { data: Transaction[] }) {
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                   className={clsx('text-base', {
-                    'bg-row border-x-4 border-y-slate-300': true,
+                    'border-x-4 border-y-slate-300 bg-row': true,
                     'border-blue-400': row.original.category === 'transport',
                     'border-red-400': row.original.category === 'food',
                     'border-orange-400': row.original.category === 'shopping',

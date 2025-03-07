@@ -1,5 +1,5 @@
 'use server'
-import { Category } from '@prisma/client'
+import type { Category } from '@prisma/client'
 import { prisma } from './prisma'
 import { headers } from 'next/headers'
 import { auth } from './auth'
@@ -11,14 +11,36 @@ interface TransactionData {
   description?: string
 }
 
-export async function getUsersTransactions() {
+type DateFilter = 'total' | '3months' | '30days'
+
+export async function getUsersTransactions(dateFilter: DateFilter = 'total') {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
 
+  let dateCondition = {}
+
+  if (dateFilter !== 'total') {
+    const today = new Date()
+    const filterDate = new Date()
+
+    if (dateFilter === '3months') {
+      filterDate.setMonth(today.getMonth() - 3)
+    } else if (dateFilter === '30days') {
+      filterDate.setDate(today.getDate() - 30)
+    }
+
+    dateCondition = {
+      date: {
+        gte: filterDate,
+      },
+    }
+  }
+
   const transactions = await prisma.transactions.findMany({
     where: {
       userId: session?.session.userId,
+      ...dateCondition,
     },
     orderBy: {
       date: 'asc',
@@ -31,14 +53,36 @@ export async function getUsersTransactions() {
   }))
 }
 
-export async function getUserLastTransactions() {
+export async function getUserLastTransactions(
+  dateFilter: DateFilter = 'total',
+) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
 
+  let dateCondition = {}
+
+  if (dateFilter !== 'total') {
+    const today = new Date()
+    const filterDate = new Date()
+
+    if (dateFilter === '3months') {
+      filterDate.setMonth(today.getMonth() - 3)
+    } else if (dateFilter === '30days') {
+      filterDate.setDate(today.getDate() - 30)
+    }
+
+    dateCondition = {
+      date: {
+        gte: filterDate,
+      },
+    }
+  }
+
   const transactions = await prisma.transactions.findMany({
     where: {
       userId: session?.session.userId,
+      ...dateCondition,
     },
     orderBy: {
       createdAt: 'desc',
@@ -91,10 +135,31 @@ export async function deleteTransactions(data: any) {
   return transaction
 }
 
-export async function getTotalAmountsByCategory() {
+export async function getTotalAmountsByCategory(
+  dateFilter: DateFilter = 'total',
+) {
   const session = await auth.api.getSession({
     headers: await headers(),
   })
+
+  let dateCondition = {}
+
+  if (dateFilter !== 'total') {
+    const today = new Date()
+    const filterDate = new Date()
+
+    if (dateFilter === '3months') {
+      filterDate.setMonth(today.getMonth() - 3)
+    } else if (dateFilter === '30days') {
+      filterDate.setDate(today.getDate() - 30)
+    }
+
+    dateCondition = {
+      date: {
+        gte: filterDate,
+      },
+    }
+  }
 
   const transactions = await prisma.transactions.groupBy({
     by: ['category'],
@@ -103,6 +168,7 @@ export async function getTotalAmountsByCategory() {
     },
     where: {
       userId: session?.session.userId,
+      ...dateCondition,
     },
   })
 

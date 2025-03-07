@@ -10,13 +10,14 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
+import type { Category } from '@prisma/client'
 
 const chartConfig = {
   transport: {
@@ -41,31 +42,39 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-interface Transaction {
-  category: string
-  amount: number
-  date: Date
+interface CategoryTotal {
+  category: Category
+  _sum: {
+    amount: number | null
+  }
 }
 
 interface TransactionsData {
-  data: Transaction[]
+  data: CategoryTotal[]
+  dateFilter?: 'total' | '3months' | '30days'
 }
 
-export function PizzaCard({ data }: TransactionsData) {
-  const chartData = data.map((item: any) => ({
+export function PizzaCard({ data, dateFilter = 'total' }: TransactionsData) {
+  const chartData = data.map((item) => ({
     category: item.category.toLowerCase(),
-    value: item._sum.amount,
+    value: item._sum?.amount || 0,
     fill:
-      chartConfig[item.category as keyof typeof chartConfig]?.color || '#000',
+      chartConfig[item.category.toLowerCase() as keyof typeof chartConfig]
+        ?.color || '#000',
   }))
+
+  let descriptionText = 'Showing total amount per category in 2025'
+  if (dateFilter === '3months') {
+    descriptionText = 'Showing total amount per category in the last 3 months'
+  } else if (dateFilter === '30days') {
+    descriptionText = 'Showing total amount per category in the last 30 days'
+  }
 
   return (
     <Card className="flex h-full flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Composition of total expenditure</CardTitle>
-        <CardDescription className="py-4">
-          Showing total amount per category in 2025
-        </CardDescription>
+        <CardDescription className="py-4">{descriptionText}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
