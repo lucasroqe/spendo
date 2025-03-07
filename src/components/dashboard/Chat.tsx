@@ -10,9 +10,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import ReactMarkdown from 'react-markdown'
 import { LoaderCircle } from 'lucide-react'
 import { useEffect, useRef } from 'react'
+import { MemoizedMarkdown } from '@/components/memoized-markdown'
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit, status, stop } =
@@ -51,7 +51,7 @@ export default function Chat() {
                 }`}
               >
                 <div className="text-base/8 tracking-wide">
-                  <ReactMarkdown>{m.content}</ReactMarkdown>
+                  <MemoizedMarkdown id={m.id} content={m.content} />
                 </div>
               </span>
             </div>
