@@ -35,7 +35,7 @@ export default function Chat() {
           </CardTitle>
         </CardHeader>
 
-        <CardContent className="h-[60vh] overflow-y-auto bg-card p-4">
+        <CardContent className="h-[75vh] overflow-y-auto bg-card p-4">
           {messages.map((m) => (
             <div
               key={m.id}
@@ -45,12 +45,10 @@ export default function Chat() {
             >
               <span
                 className={`inline-block max-w-[75%] rounded-lg p-3 shadow ${
-                  m.role === 'user'
-                    ? 'bg-emerald-500 text-white'
-                    : 'bg-secondary text-text'
+                  m.role === 'user' ? 'bg-emerald-500' : 'bg-secondary'
                 }`}
               >
-                <div className="text-base/8 tracking-wide">
+                <div className="prose text-base/8 tracking-wide dark:prose-invert">
                   <MemoizedMarkdown id={m.id} content={m.content} />
                 </div>
               </span>

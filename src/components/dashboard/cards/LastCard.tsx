@@ -1,23 +1,95 @@
 'use client'
+import clsx from 'clsx'
+import {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
+import * as React from 'react'
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import type { Category } from '@prisma/client'
 
-interface Transaction {
+export type Transaction = {
   id: string
-  category: Category
+  category: 'transport' | 'food' | 'shopping' | 'entertainment' | 'other'
   amount: number
+  description: string | null
   date: string
-  description?: string | null
-  createdAt?: Date | null
-  updatedAt?: Date | null
-  userId?: string
+}
+
+export const columns: ColumnDef<Transaction>[] = [
+  {
+    id: 'category',
+    accessorKey: 'category',
+    header: 'Category',
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue('category')}</div>
+    ),
+  },
+  {
+    id: 'description',
+    accessorKey: 'description',
+    header: 'Description',
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue('description')}</div>
+    ),
+  },
+  {
+    id: 'date',
+    accessorKey: 'date',
+    header: 'Date',
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('date'))
+
+      return <div>{date.toLocaleDateString('pt-br')}</div>
+    },
+  },
+  {
+    id: 'amount',
+    accessorKey: 'amount',
+    header: 'Amount',
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue('amount'))
+
+      const formatted = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(amount)
+
+      return <div className="font-medium">{formatted}</div>
+    },
+  },
+]
+
+export const Transaction = {
+  categories: [
+    'transport',
+    'food',
+    'shopping',
+    'entertainment',
+    'other',
+  ] as const,
 }
 
 interface LastCardProps {
@@ -26,53 +98,112 @@ interface LastCardProps {
 }
 
 export function LastCard({ data, dateFilter = 'total' }: LastCardProps) {
-  let descriptionText = 'Últimas transações'
+  let descriptionText = 'Last transactions'
   if (dateFilter === '3months') {
-    descriptionText = 'Últimas transações (3 meses)'
+    descriptionText = 'Last transactions (3 months)'
   } else if (dateFilter === '30days') {
-    descriptionText = 'Últimas transações (30 dias)'
+    descriptionText = 'Last transactions (30 days)'
   }
 
+  const [sorting, setSorting] = React.useState<SortingState>([])
+
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = React.useState({})
+
+  const table = useReactTable({
+    data: data ?? [],
+    columns,
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnVisibility,
+      rowSelection,
+      pagination: {
+        pageIndex: 0,
+        pageSize: 5,
+      },
+    },
+  })
+
   return (
-    <Card className="h-full">
-      <CardHeader>
-        <CardTitle>Últimas transações</CardTitle>
-        <CardDescription>{descriptionText}</CardDescription>
+    <Card className="flex h-full flex-col">
+      <CardHeader className="items-center pb-0">
+        <CardTitle>Transaction table</CardTitle>
+        <CardDescription className="py-4">{descriptionText}</CardDescription>
       </CardHeader>
-      <CardContent className="max-h-[calc(100%-5rem)] overflow-auto">
-        <div className="space-y-4">
-          {data.length === 0 ? (
-            <div className="py-4 text-center text-muted-foreground">
-              Nenhuma transação encontrada
-            </div>
-          ) : (
-            data.slice(0, 5).map((transaction) => (
-              <div
-                key={transaction.id}
-                className="flex items-center justify-between"
-              >
-                <div className="flex flex-col">
-                  <span className="font-medium">
-                    {transaction.category.charAt(0).toUpperCase() +
-                      transaction.category.slice(1).toLowerCase()}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {transaction.date}
-                  </span>
-                </div>
-                <div
-                  className={`font-medium ${transaction.amount < 0 ? 'text-red-500' : 'text-green-500'}`}
-                >
-                  {new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL',
-                  }).format(transaction.amount)}
-                </div>
-              </div>
-            ))
-          )}
+      <CardContent>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader className="bg-headerRow">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    )
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className={clsx('text-base', {
+                      'border-x-4 border-y-slate-300 bg-row': true,
+                      'border-blue-400': row.original.category === 'transport',
+                      'border-red-400': row.original.category === 'food',
+                      'border-orange-400': row.original.category === 'shopping',
+                      'border-green-400':
+                        row.original.category === 'entertainment',
+                      'border-gray-400': row.original.category === 'other',
+                    })}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </div>
       </CardContent>
+      <CardFooter className="flex-col gap-2 text-sm">
+        {/* <div className="leading-none text-muted-foreground h-10">
+          Showing transaction history
+        </div> */}
+      </CardFooter>
     </Card>
   )
 }
