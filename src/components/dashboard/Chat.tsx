@@ -45,12 +45,10 @@ export default function Chat() {
             >
               <span
                 className={`inline-block max-w-[75%] rounded-lg p-3 shadow ${
-                  m.role === 'user'
-                    ? 'bg-emerald-500 text-white'
-                    : 'bg-secondary text-text'
+                  m.role === 'user' ? 'bg-emerald-500' : 'bg-secondary'
                 }`}
               >
-                <div className="text-base/8 tracking-wide">
+                <div className="prose dark:prose-invert text-base/8 tracking-wide">
                   <MemoizedMarkdown id={m.id} content={m.content} />
                 </div>
               </span>
